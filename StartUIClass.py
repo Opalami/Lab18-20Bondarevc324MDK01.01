@@ -2,16 +2,18 @@ from tkinter import *
 from tkmacosx import Button
 
 class StartUI:
-    def __init__(self, window):
+    def __init__(self, window, buttonController):
         self.windowClass = window
         self.window = window.window
         self.opened = False
+        self.buttonController = buttonController
 
         self.topText = Label(self.window, text="Welcome to BriKet",
                         font=("Arial", 80), fg="black", bg="white")
 
         self.logInButton = Button(self.window, text='Log in', font=("Arial", 32, "bold"),
-                             fg="white", bg='black', width=300, height=60)
+                             fg="white", bg='black', width=300, height=60,
+                                  command=lambda: self.buttonController.changeClick('logInUI'))
 
         self.singUpButton = Button(self.window, text='Sing Up', font=("Arial", 32, 'bold'),
                                    fg="white", bg='black', width=300, height=60)

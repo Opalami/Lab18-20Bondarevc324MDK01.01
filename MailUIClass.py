@@ -7,11 +7,11 @@ class MailUI(StartUI):
     def __init__(self, window, buttonController, db):
         super().__init__(window, buttonController)
         self.db = db
-        self.topText.config(text='BtiKet')
+        self.topText.config(text='BriKet')
         self.logInButton.config(text='Game')
         self.singUpButton.config(text='Statistics')
-        self.logInButton.config(command=lambda: self.buttonController.changeClick('logInUI'))
-        self.singUpButton.config(command=lambda: self.buttonController.changeClick('singUpUI'))
+        self.logInButton.config(command=lambda: self.buttonController.changeClick('gameUI'))
+        self.singUpButton.config(command=lambda: self.buttonController.changeClick('startUI'))
         self.exitButton = Button(self.window, text='Exit', font=("Arial", 32, 'bold'),
                                  fg="white", bg='black', width=300, height=60,
                                  command=lambda: self.windowClass.closeWindow())
@@ -63,7 +63,6 @@ class MailUI(StartUI):
                 self.db.clearConfig()
                 self.buttonController.changeClick('startUI')
 
-
     def autoOpen(self):
         error = False
         with open('config.json', 'r') as file:
@@ -74,13 +73,10 @@ class MailUI(StartUI):
             if inf != []:
                 if data['userName'] == inf[0] and data['password'] == inf[2]:
                     self.buttonController.changeClick('mainUI')
-
                 else:
                     error = True
             else:
                 error = True
-
-
         if error:
             self.db.clearConfig()
             self.buttonController.changeClick('startUI')

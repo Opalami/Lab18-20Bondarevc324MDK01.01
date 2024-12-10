@@ -16,13 +16,11 @@ class ButtonController:
         fun()
 
 
-    def addStates(self, startUI, logInUI, singUpUI, mainUI):
+    def addStates(self, startUI, logInUI, singUpUI, mainUI, gameUI):
         self.switches = {
             'startUI': startUI.switchUI,
             'logInUI': logInUI.switchUI,
             'singUpUI': singUpUI.switchUI,
-            'mainUI': mainUI.switchUI
+            'mainUI': mainUI.switchUI,
+            'gameUI': gameUI.switchUI
         }
-
-    def control(self):
-        self.cont()

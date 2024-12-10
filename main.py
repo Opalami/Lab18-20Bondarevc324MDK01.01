@@ -5,6 +5,7 @@ from LogInUIClass import LogInUI
 from SingUpClass import SingUpUI
 from TipTextClass import TipText
 from MailUIClass import MailUI
+from GameUIClass import GameUI
 from DB import dataBase
 
 window = Window()
@@ -15,8 +16,9 @@ startUI = StartUI(window, buttonController)
 logInUI = LogInUI(window, db, buttonController, tipText)
 singUpUI = SingUpUI(window, db, buttonController, tipText)
 mainUI = MailUI(window, buttonController, db)
+gameUI = GameUI(window, buttonController, db)
 
-buttonController.addStates(startUI, logInUI, singUpUI, mainUI)
+buttonController.addStates(startUI, logInUI, singUpUI, mainUI, gameUI)
 startUI.switchUI()
 mainUI.autoOpen()
 

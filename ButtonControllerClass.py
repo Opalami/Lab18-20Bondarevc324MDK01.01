@@ -1,3 +1,5 @@
+
+
 class ButtonController:
     def __init__(self, window):
         self.state = 'startUI'
@@ -14,8 +16,13 @@ class ButtonController:
         fun()
 
 
-    def addStates(self, startUI, logInUI):
+    def addStates(self, startUI, logInUI, singUpUI, mainUI):
         self.switches = {
             'startUI': startUI.switchUI,
             'logInUI': logInUI.switchUI,
+            'singUpUI': singUpUI.switchUI,
+            'mainUI': mainUI.switchUI
         }
+
+    def control(self):
+        self.cont()

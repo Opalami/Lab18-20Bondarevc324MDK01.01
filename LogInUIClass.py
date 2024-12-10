@@ -2,11 +2,12 @@ from tkinter import *
 from tkmacosx import Button
 import json
 
-class LogIn:
-    def __init__(self, window, db, buttonController):
+class LogInUI:
+    def __init__(self, window, db, buttonController, tipText):
         self.window = window.window
         self.db = db
         self.buttonController = buttonController
+        self.tipText = tipText
         self.opened = False
         self.seePassword = False
         self.openEye = PhotoImage(file='Images/logInImages/OpenEye.png').subsample(x=13, y=13)
@@ -17,15 +18,27 @@ class LogIn:
                              font=("Arial", 80), fg="black", bg="white")
         self.userNameEntry = Entry(self.window, width=24, fg="white",
                                    bg='black', font=("Arial", 32), justify='center')
+        self.userNameEntry.insert(0, "username")
+        self.userNameEntry.bind('<FocusOut>', lambda _: self.tipText.offFocus(self.userNameEntry, 'username'))
+        self.userNameEntry.bind('<FocusIn>', lambda _: self.tipText.onFocus(self.userNameEntry, 'username'))
+
         self.passwordEntry = Entry(self.window, width=24, fg="white",
                                    bg='black', font=("Arial", 32), justify='center', show='*')
 
+        self.passwordEntry.bind('<FocusIn>', lambda _: self.tipText.onFocusForPassword(self.passwordEntry, self.showPassword, self.seePassword, self.switchShowPassword))
+        self.passwordEntry.bind('<FocusOut>', lambda _: self.tipText.offFocusForPassword(self.passwordEntry, self.showPassword, self.seePassword, self.switchShowPassword))
+        self.passwordEntry.insert(0, "password")
+
+
+
         self.showPassword = Label(self.window, image=self.closeEye, height=50, width=50,
                                    bg='white', fg='white')
+        self.showPassword.config(state=DISABLED)
         self.showPassword.bind("<Button-1>", lambda _:self.switchShowPassword())
-        self.backButton = Label(self.window, image=self.backImage,  height=50, width=50,
-                                   bg='white', fg='white')
-        self.backButton.bind('<Button-1>', lambda _: self.buttonController.changeClick('startUI'))
+        self.backButton = Button(self.window, image=self.backImage,  height=50, width=50,
+                                   bg='white', fg='white', command=lambda : self.buttonController.changeClick('startUI'))
+        self.userNameText = Label(self.window, text="Username/email", font=("Arial", 16, 'bold'), fg="black", bg="white")
+        self.passwordText = Label(self.window, text="Password", font=("Arial", 16, 'bold'), fg="black", bg="white")
 
         self.confirmButton = Button(self.window, text="Confirm", height=60, width=300, fg="white", bg='black', font=("Arial", 32, 'bold'),
                                     command=lambda: self.checkData())
@@ -33,24 +46,33 @@ class LogIn:
         self.UI = [self.topText, self.userNameEntry,
                    self.passwordEntry, self.showPassword,
                    self.confirmButton, self.errorLabel,
-                   self.backImage, self.backButton]
+                   self.backImage, self.backButton,
+                   self.passwordText, self.userNameText]
 
 
     def switchUI(self):
         if not self.opened:
+            if not self.seePassword:
+                self.switchShowPassword()
+            self.showPassword.config(state=DISABLED)
+            self.userNameEntry.config(fg='grey')
+            self.passwordEntry.config(fg='grey')
             self.topText.place(x=640, y=150, anchor=CENTER)
             self.showPassword.place(x=900, y=400, anchor=CENTER)
             self.userNameEntry.place(x=640, y=300, anchor=CENTER)
             self.passwordEntry.place(x=640, y=400, anchor=CENTER)
             self.confirmButton.place(x=640, y=500, anchor=CENTER)
-            self.errorLabel.place(x=640, y=600, anchor=CENTER)
             self.backButton.place(x=100, y=100, anchor=CENTER)
+            self.passwordText.place(x=415, y=350)
+            self.userNameText.place(x=415, y=250)
             self.opened = True
         else:
             if self.seePassword:
                 self.switchShowPassword()
             self.userNameEntry.delete(0, END)
+            self.userNameEntry.insert(0, 'username')
             self.passwordEntry.delete(0, END)
+            self.passwordEntry.insert(0, 'password')
             for ui in self.UI:
                 try:
                     ui.place_forget()
@@ -70,6 +92,10 @@ class LogIn:
             self.seePassword = False
 
     def checkData(self):
+        try:
+            self.errorLabel.place_forget()
+        except:
+            pass
         userName = self.userNameEntry.get()
         password = self.passwordEntry.get()
         userData = self.db.logIn(userName, password)
@@ -78,11 +104,14 @@ class LogIn:
                 "userName": userData[0],
                 "userEmail": userData[1],
                 "password": userData[2],
-                "XP": userData[3],
-                "level": userData[4]
+                "XP": userData[4],
+                "level": userData[3],
+                "Gender": userData[5]
             }
             with open('Config.json', 'w') as config:
                 json.dump(newData, config)
+            self.buttonController.changeClick('mainUI')
 
         else:
-            print('bad')
+            self.errorLabel.place(x=640, y=450, anchor=CENTER)
+

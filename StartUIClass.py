@@ -16,7 +16,8 @@ class StartUI:
                                   command=lambda: self.buttonController.changeClick('logInUI'))
 
         self.singUpButton = Button(self.window, text='Sing Up', font=("Arial", 32, 'bold'),
-                                   fg="white", bg='black', width=300, height=60)
+                                   fg="white", bg='black', width=300, height=60,
+                                   command=lambda: self.buttonController.changeClick('singUpUI'))
 
         self.exitButton = Button(self.window, text='Exit', font=("Arial", 32, 'bold'),
                                  fg="white", bg='black', width=300, height=60,

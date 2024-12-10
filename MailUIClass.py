@@ -11,7 +11,7 @@ class MailUI(StartUI):
         self.logInButton.config(text='Game')
         self.singUpButton.config(text='Statistics')
         self.logInButton.config(command=lambda: self.buttonController.changeClick('gameUI'))
-        self.singUpButton.config(command=lambda: self.buttonController.changeClick('startUI'))
+        self.singUpButton.config(command=lambda: self.buttonController.changeClick('statisticUI'))
         self.exitButton = Button(self.window, text='Exit', font=("Arial", 32, 'bold'),
                                  fg="white", bg='black', width=300, height=60,
                                  command=lambda: self.windowClass.closeWindow())

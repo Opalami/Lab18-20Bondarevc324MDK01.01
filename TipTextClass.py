@@ -1,12 +1,11 @@
 from tkinter import *
-from tkmacosx import Button
 
 class TipText:
     """
     Класс подсказки для текстовых полей
     """
     # метод, вызываемый при фокусировании на текстовое поле (не с паролем) ё
-    # убирает вставленный текст, который был вставлен при пропадании фокусирования
+    # убирает вставленный текст, который был вставлен при фокусировании
     def onFocus(self, entry, text):
         entry.config(fg='white')
         entryText = entry.get()
@@ -31,6 +30,7 @@ class TipText:
                     break
             entry.insert(0, ''.join(entryText))
     # метод, вызываемый при фокусировании на текстовое поле (с паролем)
+    # убирает вставленный текст, который был вставлен при фокусировании
     def onFocusForPassword(self, entry, seeButton, canShow, switchShowPassword):
         entryText = entry.get()
         entry.config(fg='white')
@@ -41,6 +41,7 @@ class TipText:
             seeButton.config(state=ACTIVE)
             entry.delete(0, END)
     # метод, вызываемый при пропадании фокусирования на текстовое поле (с паролем)
+    # вставляет в текстовое поле текст, переданный в функцию, серым цветом
     def offFocusForPassword(self, entry, seeButton, canShow, switchShowPassword):
         entryText = entry.get()
         if entryText.strip() == '':

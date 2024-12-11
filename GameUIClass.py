@@ -4,6 +4,15 @@ import random
 import json
 
 class GameUI:
+    """
+    Класс игровой UI
+    поля:
+    текстовые поля для различных подписей
+    кнопка подтверждения выбора и кнопка назад, кнопка перезапуска игры
+    текстовые поля для вывода кто выиграл
+    фото (3 штуки) для изображения всех кубиков
+    весь UI хранится в специальном списке
+    """
     def __init__(self, window, buttonController, db):
         self.window = window.window
         self.buttonController = buttonController
@@ -94,6 +103,7 @@ class GameUI:
             self.playAgainButton, self.all_bricks, self.backButton
         ]
 
+    # метод включения / выключения UI в зависимости от поля OPENED
     def switchUI(self):
         if not self.opened:
             with open('config.json', 'r') as file:
@@ -121,7 +131,7 @@ class GameUI:
                 except: pass
             self.opened = False
 
-
+    # метод перезагрузки игры
     def restartGame(self):
         self.switchUI()
         self.switchUI()
@@ -194,8 +204,6 @@ class GameUI:
 
             self.user_choice()
             return 0
-
-
 
     # метод, вызываемый после сохранения результата выбора пользователя с последующей обработкой
     def made_choise(self, choise):

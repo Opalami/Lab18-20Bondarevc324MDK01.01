@@ -3,6 +3,14 @@ from tkmacosx import Button
 import json
 
 class LogInUI:
+    """
+    Класс UI авторизации
+    поля:
+    кнопки: назад, подтверждения, показа пароля, переход к регистрации
+    текстовые поля: имя/почта, пароль
+    + подписи к текстовым полям, ошибки
+    весь UI содержится в специальном списке
+    """
     def __init__(self, window, db, buttonController, tipText):
         self.window = window.window
         self.db = db
@@ -13,7 +21,6 @@ class LogInUI:
         self.openEye = PhotoImage(file='Images/logInImages/OpenEye.png').subsample(x=13, y=13)
         self.closeEye = PhotoImage(file='Images/logInImages/CloseEye.png').subsample(x=13, y=13)
         self.backImage = PhotoImage(file='Images/backImage.png').subsample(x=13, y=13)
-
         self.topText = Label(self.window, text="Authorization",
                              font=("Arial", 80), fg="black", bg="white")
         self.userNameEntry = Entry(self.window, width=24, fg="white",
@@ -21,32 +28,41 @@ class LogInUI:
         self.userNameEntry.insert(0, "username")
         self.userNameEntry.bind('<FocusOut>', lambda _: self.tipText.offFocus(self.userNameEntry, 'username'))
         self.userNameEntry.bind('<FocusIn>', lambda _: self.tipText.onFocus(self.userNameEntry, 'username'))
-
         self.passwordEntry = Entry(self.window, width=24, fg="white",
                                    bg='black', font=("Arial", 32), justify='center', show='*')
-
-        self.passwordEntry.bind('<FocusIn>', lambda _: self.tipText.onFocusForPassword(self.passwordEntry, self.showPassword, self.seePassword, self.switchShowPassword))
-        self.passwordEntry.bind('<FocusOut>', lambda _: self.tipText.offFocusForPassword(self.passwordEntry, self.showPassword, self.seePassword, self.switchShowPassword))
+        self.passwordEntry.bind('<FocusIn>',
+                                lambda _: self.tipText.onFocusForPassword(self.passwordEntry,
+                                                                        self.showPassword,
+                                                                          self.seePassword,
+                                                                          self.switchShowPassword))
+        self.passwordEntry.bind('<FocusOut>',
+                                lambda _: self.tipText.offFocusForPassword(self.passwordEntry,
+                                                                           self.showPassword,
+                                                                           self.seePassword,
+                                                                           self.switchShowPassword))
         self.passwordEntry.insert(0, "password")
-
-        self.dontHaveAccount = Label(self.window, text="Dot`n have an account?", font=("Arial", 20, 'bold'), fg="black",
+        self.dontHaveAccount = Label(self.window, text="Dot`n have an account?",
+                                     font=("Arial", 20, 'bold'), fg="black",
                                  bg="white")
         self.singUpButton = Button(self.window, text='Sing up ->', font=("Arial", 12, 'bold'),
                                   fg="white", bg='black', width=70, height=30,
                                   command=lambda: self.buttonController.changeClick('singUpUI'))
-
         self.showPassword = Label(self.window, image=self.closeEye, height=50, width=50,
                                    bg='white', fg='white')
         self.showPassword.config(state=DISABLED)
         self.showPassword.bind("<Button-1>", lambda _:self.switchShowPassword())
         self.backButton = Button(self.window, image=self.backImage,  height=50, width=50,
-                                   bg='white', fg='white', command=lambda : self.buttonController.changeClick('startUI'))
-        self.userNameText = Label(self.window, text="Username/email", font=("Arial", 16, 'bold'), fg="black", bg="white")
-        self.passwordText = Label(self.window, text="Password", font=("Arial", 16, 'bold'), fg="black", bg="white")
-
-        self.confirmButton = Button(self.window, text="Confirm", height=60, width=300, fg="white", bg='black', font=("Arial", 32, 'bold'),
+                                   bg='white', fg='white',
+                                 command=lambda : self.buttonController.changeClick('startUI'))
+        self.userNameText = Label(self.window, text="Username/email",
+                                  font=("Arial", 16, 'bold'), fg="black", bg="white")
+        self.passwordText = Label(self.window, text="Password", font=("Arial", 16, 'bold'),
+                                  fg="black", bg="white")
+        self.confirmButton = Button(self.window, text="Confirm", height=60, width=300,
+                                    fg="white", bg='black', font=("Arial", 32, 'bold'),
                                     command=lambda: self.checkData())
-        self.errorLabel = Label(self.window, text="Username or password is incorrect", bg='white', fg="red", font=("Arial", 22, 'bold'))
+        self.errorLabel = Label(self.window, text="Username or password is incorrect",
+                                bg='white', fg="red", font=("Arial", 22, 'bold'))
         self.UI = [self.topText, self.userNameEntry,
                    self.passwordEntry, self.showPassword,
                    self.confirmButton, self.errorLabel,
@@ -54,7 +70,7 @@ class LogInUI:
                    self.passwordText, self.userNameText,
                    self.dontHaveAccount, self.singUpButton]
 
-
+    # метод включения / выключения UI в зависимости от поля OPENED
     def switchUI(self):
         if not self.opened:
             if not self.seePassword:
@@ -87,7 +103,8 @@ class LogInUI:
                     pass
             self.opened = False
 
-
+    # метод показа / скрытия пароля вместо * для первого пароля
+    # в зависимости от seePassword
     def switchShowPassword(self):
         if not self.seePassword:
             self.showPassword.config(image=self.openEye)
@@ -98,6 +115,7 @@ class LogInUI:
             self.passwordEntry.config(show='*')
             self.seePassword = False
 
+    # метод проверки всех полей используя уже существующие проверки => вход в аккаунт
     def checkData(self):
         try:
             self.errorLabel.place_forget()

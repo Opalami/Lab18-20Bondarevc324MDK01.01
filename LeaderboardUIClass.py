@@ -1,8 +1,16 @@
 from tkinter import *
 from tkmacosx import Button
-import json
 
 class LeaderboardUI:
+    """
+    Класс UI доски лидеров
+    поля:
+    текстовые поля для топ 10 игроков
+    кнопка назад
+    подпись заголовка
+    список с полями лучших игроков хранятся в специальном списке
+    список со всем UI хранится тоже в специальном списке
+    """
     def __init__(self, window, buttonController, db):
         self.db = db
         self.window = window.window
@@ -42,13 +50,14 @@ class LeaderboardUI:
             self.player10,
         ]
 
+    # метод включения / выключения UI в зависимости от поля OPENED
     def switchUI(self):
         if not self.opened:
             inf = self.db.getBestPlayers()
             try:
                 for i in range(10):
                     try:
-                        self.players[i].config(text=f'{inf[i][0]} - level {inf[i][5]} ({inf[i][4]} xp): wins: {inf[i][1]}, losses: {inf[i][2]}')
+                        self.players[i].config(text=f'{i+1}) {inf[i][0]} - level {inf[i][5]} ({inf[i][4]} xp): wins: {inf[i][1]}, losses: {inf[i][2]}')
                         self.players[i].place(x=640, y=200+i*50, anchor='center')
                     except:
                         pass

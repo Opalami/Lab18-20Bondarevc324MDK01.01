@@ -4,6 +4,12 @@ from hashlib import md5
 import json
 
 class dataBase:
+    """
+    класс база данных
+    поля:
+    шаблоны для инициализации таблиц SQLite
+    инициализированные таблицы
+    """
     def __init__(self):
         self.usersInfScheme = {
             'UserName': TEXT,
@@ -24,6 +30,7 @@ class dataBase:
         }
         self.statistics = Taper('statistics', 'Game/identifier.sqlite').create_table(self.statisticsScheme)
 
+    # метод проверки на существование аккаунта с данным именем/почтой
     def checkAccount(self, userName):
         inf = self.db.read('UserName', userName)
         if inf == []:
@@ -33,6 +40,7 @@ class dataBase:
         else:
             return True
 
+    # метод входа в аккаунт с проверкой на корректность ввода данных
     def logIn(self, userName, password, b=True):
         inf = self.db.read('UserName', userName)
 
@@ -52,6 +60,7 @@ class dataBase:
                     return []
         return []
 
+    # метод проверки на уникальность переданного имени
     def checkNewName(self, username):
         inf = self.db.read('UserName', username)
         if inf == []:
@@ -59,7 +68,7 @@ class dataBase:
         else:
             return False
 
-
+    # метод проверки на уникальность данной почты
     def checkNewEmail(self, email):
         inf = self.db.read('Email', email)
         if inf == []:
@@ -67,6 +76,7 @@ class dataBase:
         else:
             return False
 
+    # метод регистрации данных в БД и в файл config
     def singUp(self, userName, email, password, gender):
         self.db.write((userName, email, md5(password.encode()).hexdigest(), 1, 0, gender))
         self.statistics.write((userName, 0, 0, 0, 0, 1))
@@ -82,6 +92,7 @@ class dataBase:
         with open('config.json', 'w') as file:
             json.dump(newData, file)
 
+    # метод очищения файла config
     def clearConfig(self):
         newData = {
             "userName": None,
@@ -95,17 +106,18 @@ class dataBase:
         with open('Config.json', 'w') as config:
             json.dump(newData, config)
 
+    # метод получения статистики переданного пользователя
     def getStatistics(self, userName):
         inf = self.statistics.read('UserName', userName)
         if inf != []:
             return inf
         else:
             return []
-
+    # метод перезаписи статистики
     def rewriteStatistics(self, userName, plusWins=0, plusLoses=0, plusXP=0):
         inf = self.statistics.read('UserName', userName)
         self.statistics.delete_row('UserName', userName)
-        if (inf[4]+plusXP) // 400 > inf[5]:
+        if (inf[4]+plusXP) // 400 >= inf[5]:
             plusLevel = 1
         else:
             plusLevel = 0
@@ -119,6 +131,7 @@ class dataBase:
         )
         self.statistics.write(newInf)
 
+    # метод получения отсортированного списка с лучшими игроками
     def getBestPlayers(self):
         inf = self.statistics.read_all()
         inf.sort(key=lambda x: x[4], reverse=True)

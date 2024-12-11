@@ -1,5 +1,4 @@
 from tkinter import *
-from tkmacosx import Button
 
 class Window:
     """

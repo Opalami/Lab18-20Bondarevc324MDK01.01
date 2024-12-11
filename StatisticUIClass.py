@@ -3,6 +3,14 @@ from tkmacosx import Button
 import json
 
 class StatisticUI:
+    """
+    Класс статистика UI
+    поля:
+    инициализация окна, бд, контроллер кнопок
+    объявление полей для выйгрыша, поражения, всего сыграно матчей, опыт, уровень
+    кнопки: для перехода на прошлое окно, переход на доску лидеров
+    весь UI хранится в специальном поле-списке
+    """
     def __init__(self, window, db, buttonController):
         self.window = window.window
         self.db = db
@@ -12,14 +20,10 @@ class StatisticUI:
                              font=("Arial", 80, 'bold'), fg="black", bg="white")
         self.winsLabel = Label(self.window, text="",
                              font=("Arial", 50, 'bold'), fg="black", bg="white")
-
         self.losesLabel = Label(self.window, text="",
                              font=("Arial", 50, 'bold'), fg="black", bg="white")
-
         self.gamePlayedLabel = Label(self.window, text="",
                              font=("Arial", 50, 'bold'), fg="black", bg="white")
-
-
         self.xpLabel =Label(self.window, text="",
                              font=("Arial", 50, 'bold'), fg="black", bg="white")
 
@@ -38,9 +42,7 @@ class StatisticUI:
             self.topText, self.winsLabel, self.losesLabel, self.gamePlayedLabel,
             self.xpLabel, self.levelLabel, self.backButton, self.leaderBoardButton
         ]
-
-
-
+    # метод включения / выключения UI в зависимости от поля OPENED
     def switchUI(self):
         if not self.opened:
             with open('config.json', 'r') as file:

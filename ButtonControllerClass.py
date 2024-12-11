@@ -1,11 +1,16 @@
 class ButtonController:
+    """
+    Класс контроллер кнопок
+    поля:
+    текущее состояние
+    переключатели
+    """
     def __init__(self, window):
         self.state = 'startUI'
         self.switches = {}
-        self.startUI = None
         self.window = window
-        self.logInUI = None
 
+    # метод выключения прошлого UI и включения нового
     def changeClick(self, newState):
         fun = self.switches[self.state]
         fun()
@@ -13,7 +18,7 @@ class ButtonController:
         fun = self.switches[self.state]
         fun()
 
-
+    # метод добавления переключателей
     def addStates(self, startUI, logInUI, singUpUI, mainUI, gameUI, statisticUI, leaderboardUI):
         self.switches = {
             'startUI': startUI.switchUI,

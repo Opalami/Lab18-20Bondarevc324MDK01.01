@@ -4,6 +4,16 @@ from StartUIClass import StartUI
 import json
 
 class MailUI(StartUI):
+    """
+    Класс UI главного экрана
+    наследован от класса StartUI
+    все поля наследованы
+    поля:
+    текстовые подписи имени и небольшой статистики
+    кнопка выйти из аккаунта
+    + настройка уже наследованных полей
+    весь UI содержится в специальном списке
+    """
     def __init__(self, window, buttonController, db):
         super().__init__(window, buttonController)
         self.db = db
@@ -13,16 +23,11 @@ class MailUI(StartUI):
         self.singUpButton.config(text='Statistics')
         self.logInButton.config(command=lambda: self.buttonController.changeClick('gameUI'))
         self.singUpButton.config(command=lambda: self.buttonController.changeClick('statisticUI'))
-
         self.nickname = Label(self.window, text='', width=1100, font=("Arial", 30, 'bold'), fg="black", bg="white", justify=RIGHT)
         self.level = Label(self.window, text='',  width=1100, font=("Arial", 18, 'bold'), fg="black", bg="white", justify=RIGHT)
-
         self.logUOutButton = Button(self.window, text='Log out', font=("Arial", 12, 'bold'),
                                  fg="white", bg='black', width=70, height=20,
                                  command=lambda: self.existEnter('log out?', self.logOut, self.doubleSwitch))
-
-
-
         self.UI = [
             self.topText,
             self.logInButton,
@@ -37,13 +42,13 @@ class MailUI(StartUI):
             self.exitButton
         ]
 
+    # метод выхода из аккаунта
     def logOut(self):
         self.opened = True
         self.db.clearConfig()
         self.buttonController.changeClick('startUI')
 
-
-
+    # метод включения / выключения UI в зависимости от поля OPENED
     def switchUI(self):
         if self.opened:
             for ui in self.UI:
@@ -71,6 +76,9 @@ class MailUI(StartUI):
                 self.db.clearConfig()
                 self.buttonController.changeClick('startUI')
 
+    # метод авто входа если это не первый запуск и не
+    # был произведен выход из аккаунта после последней сессии
+    # иначе переход на start window
     def autoOpen(self):
         error = False
         with open('config.json', 'r') as file:

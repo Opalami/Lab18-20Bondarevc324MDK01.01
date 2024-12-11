@@ -3,8 +3,12 @@ from tkmacosx import Button
 
 class StartUI:
     """
-    Класс старто
-
+    Класс стартовый UI
+    поля:
+    инициализация окна, контроллер кнопок
+    кнопки: зарегистрироваться, войти, выход
+    текстовые поля: главная подпись посередине наверху
+    весь UI хранится в специальном поле-списке
     """
     def __init__(self, window, buttonController):
         self.windowClass = window
@@ -20,25 +24,21 @@ class StartUI:
                                command=lambda: self.windowClass.closeWindow())
         self.topText = Label(self.window, text="Welcome to BriKet",
                         font=("Arial", 100, 'bold'), fg="black", bg="white")
-
         self.logInButton = Button(self.window, text='Log in', font=("Arial", 32, "bold"),
                              fg="white", bg='black', width=300, height=60,
                                   command=lambda: self.buttonController.changeClick('logInUI'))
-
         self.singUpButton = Button(self.window, text='Sing Up', font=("Arial", 32, 'bold'),
                                    fg="white", bg='black', width=300, height=60,
                                    command=lambda: self.buttonController.changeClick('singUpUI'))
-
         self.exitButton = Button(self.window, text='Exit', font=("Arial", 32, 'bold'),
                                  fg="white", bg='black', width=300, height=60,
                                  command=lambda: self.existEnter('exit ?', self.windowClass.closeWindow,
                                                                  self.doubleSwitch))
-
         self.UI = [self.topText, self.logInButton,
                    self.singUpButton, self.exitButton,
                    self.yesButton, self.noButton, self.exitText]
 
-
+    # метод включения / выключения UI в зависимости от поля OPENED
     def switchUI(self):
         if self.opened:
             for ui in self.UI:
@@ -54,6 +54,10 @@ class StartUI:
             self.exitButton.place(x=640, y=500, anchor=CENTER)
             self.opened = True
 
+    # метод подтверждения действия (выводит диалоговое окно и спрашивает, хотим ли мы сделать "текст"
+    # текст - переданный параметр
+    # после выбора выполняет funcYes при нажатии на да
+    # или funcNo при нажатии на нет
     def existEnter(self, text, funcYes, funcNo):
         self.exitText.config(text=f'Do you actually want to {text}')
         self.switchUI()
@@ -63,6 +67,7 @@ class StartUI:
         self.noButton.place(x=440, y=450, anchor=CENTER)
         self.yesButton.place(x=840, y=450, anchor=CENTER)
 
+    # метод перезагрузки UI (выключение и включение)
     def doubleSwitch(self):
         self.opened = True
         self.switchUI()

@@ -236,11 +236,11 @@ class SingUpUI(LogInUI):
         return not error
 
     def checkEmail(self, email):
-        if not(len(email.split('@')) == 2 and '.' in email.split('@')[1]
+        if not((len(email.split('@')) == 2 and '.' in email.split('@')[1]
                and len(email.split('@')[1].split('.')) == 2 and email.split('@')[1].split('.')[0].isalnum()
                     and email.split('@')[1].split('.')[1].isalnum()
                and any(char in 'qwertyuioplkjhgfdsazxcvbnm' for char in email.split('@')[1].split('.')[1])
-        and any(char in 'qwertyuioplkjhgfdsazxcvbnm' for char in email.split('@')[1].split('.')[0])):
+        and any(char in 'qwertyuioplkjhgfdsazxcvbnm' for char in email.split('@')[1].split('.')[0])) and any(char in 'qwertyuioplkjhgfdsazxcvbnm' for char in email.split('@')[0])):
             self.emailError.config(text='Enter email correctly')
             self.emailError.place(x=375, y=440, anchor=CENTER)
             return False

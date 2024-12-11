@@ -49,12 +49,12 @@ class LeaderboardUI:
                 for i in range(10):
                     try:
                         self.players[i].config(text=f'{inf[i][0]} - level {inf[i][5]} ({inf[i][4]} xp): wins: {inf[i][1]}, losses: {inf[i][2]}')
-                        self.players[i].place(x=640, y=250+i*50, anchor='center')
+                        self.players[i].place(x=640, y=200+i*50, anchor='center')
                     except:
                         pass
             except:
                 pass
-            self.topText.place(x=640, y=150, anchor='center')
+            self.topText.place(x=640, y=110, anchor='center')
             self.backButton.place(x=100, y=100, anchor='center')
             self.opened = True
         else:

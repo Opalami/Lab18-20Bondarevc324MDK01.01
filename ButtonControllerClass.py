@@ -1,5 +1,3 @@
-
-
 class ButtonController:
     def __init__(self, window):
         self.state = 'startUI'
@@ -16,12 +14,13 @@ class ButtonController:
         fun()
 
 
-    def addStates(self, startUI, logInUI, singUpUI, mainUI, gameUI, statisticUI):
+    def addStates(self, startUI, logInUI, singUpUI, mainUI, gameUI, statisticUI, leaderboardUI):
         self.switches = {
             'startUI': startUI.switchUI,
             'logInUI': logInUI.switchUI,
             'singUpUI': singUpUI.switchUI,
             'mainUI': mainUI.switchUI,
             'gameUI': gameUI.switchUI,
-            'statisticUI': statisticUI.switchUI
+            'statisticUI': statisticUI.switchUI,
+            'leaderboardUI': leaderboardUI.switchUI
         }

@@ -29,7 +29,11 @@ class LogInUI:
         self.passwordEntry.bind('<FocusOut>', lambda _: self.tipText.offFocusForPassword(self.passwordEntry, self.showPassword, self.seePassword, self.switchShowPassword))
         self.passwordEntry.insert(0, "password")
 
-
+        self.dontHaveAccount = Label(self.window, text="Dot`n have an account?", font=("Arial", 20, 'bold'), fg="black",
+                                 bg="white")
+        self.singUpButton = Button(self.window, text='Sing up ->', font=("Arial", 12, 'bold'),
+                                  fg="white", bg='black', width=70, height=30,
+                                  command=lambda: self.buttonController.changeClick('singUpUI'))
 
         self.showPassword = Label(self.window, image=self.closeEye, height=50, width=50,
                                    bg='white', fg='white')
@@ -47,13 +51,16 @@ class LogInUI:
                    self.passwordEntry, self.showPassword,
                    self.confirmButton, self.errorLabel,
                    self.backImage, self.backButton,
-                   self.passwordText, self.userNameText]
+                   self.passwordText, self.userNameText,
+                   self.dontHaveAccount, self.singUpButton]
 
 
     def switchUI(self):
         if not self.opened:
             if not self.seePassword:
                 self.switchShowPassword()
+            self.dontHaveAccount.place(x=1100, y=70, anchor=CENTER)
+            self.singUpButton.place(x=1100, y=110, anchor=CENTER)
             self.showPassword.config(state=DISABLED)
             self.userNameEntry.config(fg='grey')
             self.passwordEntry.config(fg='grey')

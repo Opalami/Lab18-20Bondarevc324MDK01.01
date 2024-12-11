@@ -8,19 +8,20 @@ class MailUI(StartUI):
         super().__init__(window, buttonController)
         self.db = db
         self.topText.config(text='BriKet')
+        self.topText.config(font=('Arial', 140, 'bold'))
         self.logInButton.config(text='Game')
         self.singUpButton.config(text='Statistics')
         self.logInButton.config(command=lambda: self.buttonController.changeClick('gameUI'))
         self.singUpButton.config(command=lambda: self.buttonController.changeClick('statisticUI'))
-        self.exitButton = Button(self.window, text='Exit', font=("Arial", 32, 'bold'),
-                                 fg="white", bg='black', width=300, height=60,
-                                 command=lambda: self.windowClass.closeWindow())
+
         self.nickname = Label(self.window, text='', width=1100, font=("Arial", 30, 'bold'), fg="black", bg="white", justify=RIGHT)
         self.level = Label(self.window, text='',  width=1100, font=("Arial", 18, 'bold'), fg="black", bg="white", justify=RIGHT)
 
         self.logUOutButton = Button(self.window, text='Log out', font=("Arial", 12, 'bold'),
                                  fg="white", bg='black', width=70, height=20,
-                                 command=lambda: self.logOut())
+                                 command=lambda: self.existEnter('log out?', self.logOut, self.doubleSwitch))
+
+
 
         self.UI = [
             self.topText,
@@ -29,12 +30,19 @@ class MailUI(StartUI):
             self.exitButton,
             self.nickname,
             self.level,
-            self.logUOutButton
+            self.logUOutButton,
+            self.yesButton,
+            self.noButton,
+            self.exitText,
+            self.exitButton
         ]
 
     def logOut(self):
+        self.opened = True
         self.db.clearConfig()
         self.buttonController.changeClick('startUI')
+
+
 
     def switchUI(self):
         if self.opened:
@@ -80,7 +88,6 @@ class MailUI(StartUI):
         if error:
             self.db.clearConfig()
             self.buttonController.changeClick('startUI')
-
 
 
 

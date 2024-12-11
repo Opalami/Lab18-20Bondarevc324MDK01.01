@@ -42,7 +42,6 @@ class dataBase:
         if inf != []:
             if b:
                 if md5(password.encode()).hexdigest() == inf[2]:
-                    print(inf)
                     return inf
                 else:
                     return []
@@ -106,7 +105,7 @@ class dataBase:
     def rewriteStatistics(self, userName, plusWins=0, plusLoses=0, plusXP=0):
         inf = self.statistics.read('UserName', userName)
         self.statistics.delete_row('UserName', userName)
-        if inf[4] // 400 > inf[5]:
+        if (inf[4]+plusXP) // 400 > inf[5]:
             plusLevel = 1
         else:
             plusLevel = 0
@@ -119,3 +118,10 @@ class dataBase:
             inf[5]+plusLevel
         )
         self.statistics.write(newInf)
+
+    def getBestPlayers(self):
+        inf = self.statistics.read_all()
+        inf.sort(key=lambda x: x[4], reverse=True)
+        return inf
+
+

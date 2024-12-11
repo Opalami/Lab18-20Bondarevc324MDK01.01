@@ -2,14 +2,24 @@ from tkinter import *
 from tkmacosx import Button
 
 class StartUI:
+    """
+    Класс старто
+
+    """
     def __init__(self, window, buttonController):
         self.windowClass = window
         self.window = window.window
         self.opened = False
         self.buttonController = buttonController
-
+        self.exitText = Label(self.window, text='Do you actually want to ', width=1100, font=("Arial", 50, 'bold'), fg="black", bg="white")
+        self.yesButton = Button(self.window, text='Yes', font=("Arial", 32, 'bold'),
+                                fg="white", bg='black', width=300, height=60,
+                                command=lambda: self.windowClass.closeWindow())
+        self.noButton = Button(self.window, text='No', font=("Arial", 32, 'bold'),
+                               fg="white", bg='black', width=300, height=60,
+                               command=lambda: self.windowClass.closeWindow())
         self.topText = Label(self.window, text="Welcome to BriKet",
-                        font=("Arial", 80), fg="black", bg="white")
+                        font=("Arial", 100, 'bold'), fg="black", bg="white")
 
         self.logInButton = Button(self.window, text='Log in', font=("Arial", 32, "bold"),
                              fg="white", bg='black', width=300, height=60,
@@ -21,10 +31,13 @@ class StartUI:
 
         self.exitButton = Button(self.window, text='Exit', font=("Arial", 32, 'bold'),
                                  fg="white", bg='black', width=300, height=60,
-                                 command=lambda: self.windowClass.closeWindow())
+                                 command=lambda: self.existEnter('exit ?', self.windowClass.closeWindow,
+                                                                 self.doubleSwitch))
 
         self.UI = [self.topText, self.logInButton,
-                   self.singUpButton, self.exitButton]
+                   self.singUpButton, self.exitButton,
+                   self.yesButton, self.noButton, self.exitText]
+
 
     def switchUI(self):
         if self.opened:
@@ -41,3 +54,16 @@ class StartUI:
             self.exitButton.place(x=640, y=500, anchor=CENTER)
             self.opened = True
 
+    def existEnter(self, text, funcYes, funcNo):
+        self.exitText.config(text=f'Do you actually want to {text}')
+        self.switchUI()
+        self.noButton.config(command=lambda : funcNo())
+        self.yesButton.config(command=lambda : funcYes())
+        self.exitText.place(x=640, y=300, anchor=CENTER)
+        self.noButton.place(x=440, y=450, anchor=CENTER)
+        self.yesButton.place(x=840, y=450, anchor=CENTER)
+
+    def doubleSwitch(self):
+        self.opened = True
+        self.switchUI()
+        self.switchUI()

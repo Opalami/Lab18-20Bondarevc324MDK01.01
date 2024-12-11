@@ -16,7 +16,10 @@ class SingUpUI(LogInUI):
                                              value='Female', font=("Arial", 20), bg='white', fg='black', selectcolor='blue')
         self.genderText = Label(self.window, text="Gender", font=("Arial", 24, 'bold'), fg="black", bg="white")
 
-
+        self.haveAccount = Label(self.window, text="Already have an account?", font=("Arial", 20, 'bold'), fg="black", bg="white")
+        self.logInButton = Button(self.window, text='Log in ->', font=("Arial", 12, 'bold'),
+                                fg="white", bg='black', width=70, height=30,
+                                command=lambda: self.buttonController.changeClick('logInUI'))
         self.topText.config(text='Sing up')
         self.userEmailEntry = Entry(self.window, width=24, fg="white",
                                    bg='black', font=("Arial", 32), justify='center')
@@ -67,6 +70,7 @@ class SingUpUI(LogInUI):
             self.passwordError, self.againPasswordError,
             self.radiobuttonMale, self.radiobuttonFemale,
             self.genderChoiceError, self.genderText, self.clearButton,
+            self.logInButton, self.haveAccount
         ]
         self.errors = [self.userNameError, self.emailError,
                        self.passwordError, self.againPasswordError,
@@ -109,6 +113,8 @@ class SingUpUI(LogInUI):
             for ui in range(4):
                 self.mainUI[ui].delete(0, 'end')
                 self.mainUI[ui].insert(0, self.mailUIDef[ui])
+            self.haveAccount.place(x=1100, y=70, anchor=CENTER)
+            self.logInButton.place(x=1100, y=110, anchor=CENTER)
             self.showAgainPassword.config(state=DISABLED)
             self.genderChoice.set("None")
             self.genderText.place(x=640, y=470, anchor=CENTER)
@@ -247,6 +253,10 @@ class SingUpUI(LogInUI):
     def checkName(self, name):
         if not any(char in 'qwertyuioplkjhgfdsazxcvbnm' for char in name):
             self.userNameError.config(text='Name cannot contain with out letters')
+            self.userNameError.place(x=self.cordErrorsMainUI[0][0], y=self.cordErrorsMainUI[0][1], anchor=CENTER)
+            return False
+        if len(name) > 20:
+            self.userNameError.config(text='Name is too long')
             self.userNameError.place(x=self.cordErrorsMainUI[0][0], y=self.cordErrorsMainUI[0][1], anchor=CENTER)
             return False
         return True
